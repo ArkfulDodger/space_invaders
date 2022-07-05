@@ -30,7 +30,7 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-	// assign window
+	// assign/create window
 	window = glfwCreateWindow(640, 480, "Space Invaders", NULL, NULL);
 
 	// terminate GLFW and the program if window creation fails
@@ -64,13 +64,28 @@ int main()
 	// print Open GL version
 	printf("Using OpenGL: %d.%d\n", glVersion[0], glVersion[1]);
 
-	// set screen color to red
+	// set the buffer clear color to be used in glClear() to red
 	glClearColor(1.0, 0.0, 0.0, 1.0);
 
+	// do rendering loop unless the window is closing
 	while (!glfwWindowShouldClose(window))
 	{
+		// clears buffer to color defined above
 		glClear(GL_COLOR_BUFFER_BIT);
+		// swaps the draw and display buffers
 		glfwSwapBuffers(window);
+		// process pending events
 		glfwPollEvents();
 	}
+
+	// if rendering loop exited...
+
+	// destroy (close) the window
+	glfwDestroyWindow(window);
+
+	// terminate glfw
+	glfwTerminate();
+
+	// return 0 to close the application
+	return 0;
 }
