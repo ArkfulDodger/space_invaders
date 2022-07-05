@@ -5,6 +5,37 @@
 // including the GLFW library header
 #include <GLFW/glfw3.h>
 
+
+
+// GL ERROR code not included in tutorial
+
+#define GL_ERROR_CASE(glerror)\
+    case glerror: snprintf(error, sizeof(error), "%s", #glerror)
+
+inline void gl_debug(const char *file, int line) {
+    GLenum err;
+    while((err = glGetError()) != GL_NO_ERROR){
+        char error[128];
+
+        switch(err) {
+            GL_ERROR_CASE(GL_INVALID_ENUM); break;
+            GL_ERROR_CASE(GL_INVALID_VALUE); break;
+            GL_ERROR_CASE(GL_INVALID_OPERATION); break;
+            GL_ERROR_CASE(GL_INVALID_FRAMEBUFFER_OPERATION); break;
+            GL_ERROR_CASE(GL_OUT_OF_MEMORY); break;
+            default: snprintf(error, sizeof(error), "%s", "UNKNOWN_ERROR"); break;
+        }
+
+        fprintf(stderr, "%s - %s: %d\n", error, file, line);
+    }
+}
+
+#undef GL_ERROR_CASE
+
+// finish non-tutorial code
+
+
+
 // callback for error handling
 // arg1: the error code
 // arg2: the error description string
@@ -61,8 +92,23 @@ int main()
 	glGetIntegerv(GL_MAJOR_VERSION, &glVersion[0]);
 	glGetIntegerv(GL_MINOR_VERSION, &glVersion[1]);
 
+
+
+	/// debug line not in tutorial
+	gl_debug(__FILE__, __LINE__);
+
+
+
 	// print Open GL version
 	printf("Using OpenGL: %d.%d\n", glVersion[0], glVersion[1]);
+
+
+
+	// additional version prints not in tutorial
+	printf("Renderer used: %s\n", glGetString(GL_RENDERER));
+  printf("Shading Language: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+
 
 	// set the buffer clear color to be used in glClear() to red
 	glClearColor(1.0, 0.0, 0.0, 1.0);
